@@ -1,18 +1,10 @@
 package sc.spring.natsListener.repositories;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import sc.spring.natsListener.entities.User;
 
 @Repository
-public class UserRepository {
-
-    private String LastUserMessage;
-
-    public void saveMessage(String message){
-        LastUserMessage = message;
-    }
-
-    public String getMessage(){
-        return LastUserMessage;
-    }
+public interface UserRepository extends JpaRepository<User, Long> {
 
 }
