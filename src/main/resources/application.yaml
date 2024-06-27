@@ -21,3 +21,7 @@ spring:
       hibernate.format_sql: false
       javax.persistence.sharedCache.mode: NONE
 
+values:
+  nats:
+    host: "192.168.246.64:4222"
+

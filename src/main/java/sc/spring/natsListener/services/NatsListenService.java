@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import sc.spring.natsListener.entities.User;
@@ -32,16 +33,14 @@ public class NatsListenService {
     @Getter
     private User currentUser;
 
-    //TODO вынести адрес подключения в свойства
-    //TODO решить проблему с запаздыванием
-    public NatsListenService(UserRepository userRepository) {
+    public NatsListenService(UserRepository userRepository, Environment environment) {
         this.userRepository = userRepository;
         natsQueryCounter = 0;
 
         try {
-            natsConnection = Nats.connect("192.168.246.64:4222");
+            natsConnection = Nats.connect(environment.getProperty("values.nats.host"));
             natsDispatcher = natsConnection.createDispatcher();
-        } catch (Exception e) {
+            } catch (Exception e) {
             log.error("--- Не удалось подключиться к NATS-серверу ---");
             throw new RuntimeException(e);
         }
@@ -56,12 +55,13 @@ public class NatsListenService {
             return;
         }
 
+        currentUser = userRepository.findById(ByteArrayToLong(message.getData())).orElseThrow();
+
         try {
             log.info("{}. GetMessage! JSON: {}", ++natsQueryCounter, (new ObjectMapper()).writeValueAsString(currentUser));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        currentUser = userRepository.findById(ByteArrayToLong(message.getData())).orElseThrow();
         String responseString = "User " + currentUser.getName() + " was sended successfully!";
         natsConnection.publish(message.getReplyTo(), responseString.getBytes());
     }
