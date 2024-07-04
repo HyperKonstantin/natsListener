@@ -1,10 +1,10 @@
 package sc.spring.natsListener.entities;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "Users")
+@Document
 @Getter
 @Setter
 @ToString
@@ -14,25 +14,10 @@ import lombok.*;
 public class User {
 
     @Id
-    @SequenceGenerator(name = "users_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
     private long id;
-
     private String name;
-
     private int age;
-
     private int salary;
-
-    @Column(name = "average_department_salary")
     private Double averageDepartmentSalary;
-
-    private int department;
-
-    public User(String name, int age, int salary, int department) {
-        this.name = name;
-        this.age = age;
-        this.salary = salary;
-        this.department = department;
-    }
+    private String department;
 }
