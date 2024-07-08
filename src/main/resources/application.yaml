@@ -1,9 +1,13 @@
 server:
   port : 8081
 
-spring.data:
-  mongodb:
-    database: UsersNoSQLDatabase
+spring:
+  data:
+    mongodb:
+      database: UsersNoSQLDatabase
+
+  kafka:
+    bootstrap-servers: localhost:29092
 
 values:
   nats:

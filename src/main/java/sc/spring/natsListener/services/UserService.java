@@ -18,7 +18,7 @@ public class UserService {
     private int queryCounter;
 
     @SneakyThrows
-    public void updateUser(String userJSON) {
+    public void addUser(String userJSON) {
         User user = (new ObjectMapper().readValue(userJSON, User.class));
         userRepository.save(user);
         log.info("{}. GetMessage: {}", ++queryCounter, user);
@@ -28,4 +28,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public void deleteAllUsers() {
+        userRepository.deleteAll();
+    }
 }

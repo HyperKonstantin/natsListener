@@ -11,10 +11,11 @@ import sc.spring.natsListener.services.UserService;
 @RequiredArgsConstructor
 public class KafkaConsumer {
 
-    private final UserService natsListenService;
+    private final UserService userService;
 
     @KafkaListener(topics = "user", groupId = "userConsumers")
     public void listen(String message) {
-        natsListenService.updateUser(message);
+        userService.addUser(message);
+
     }
 }
