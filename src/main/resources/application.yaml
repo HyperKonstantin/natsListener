@@ -7,7 +7,10 @@ spring:
       database: UsersNoSQLDatabase
 
   kafka:
-    bootstrap-servers: localhost:29092
+    bootstrap-servers: localhost:9092 #29092 для docker-compose
+    consumer:
+      properties:
+        isolation.level: read_committed # уровень изоляции для транзакций
 
 values:
   nats:

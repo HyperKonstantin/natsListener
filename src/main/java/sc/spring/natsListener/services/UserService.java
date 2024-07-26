@@ -19,7 +19,7 @@ public class UserService {
 
     @SneakyThrows
     public void addUser(String userJSON) {
-        User user = (new ObjectMapper().readValue(userJSON, User.class));
+        User user = (new ObjectMapper()).readValue(userJSON, User.class);
         userRepository.save(user);
         log.info("{}. GetMessage: {}", ++queryCounter, user);
     }
