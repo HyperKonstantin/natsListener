@@ -1,6 +1,5 @@
 package sc.spring.natsListener.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -18,8 +17,7 @@ public class UserService {
     private int queryCounter;
 
     @SneakyThrows
-    public void addUser(String userJSON) {
-        User user = (new ObjectMapper()).readValue(userJSON, User.class);
+    public void addUser(User user) {
         userRepository.save(user);
         log.info("{}. GetMessage: {}", ++queryCounter, user);
     }

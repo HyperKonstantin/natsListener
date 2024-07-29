@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sc.spring.natsListener.entities.User;
 import sc.spring.natsListener.services.UserService;
 
 import java.util.List;
@@ -17,27 +18,25 @@ public class KafkaConsumer {
     private final UserService userService;
 
     @KafkaListener(topics = "user", groupId = "a")
-    public void listen(String message) {
-        userService.addUser(message);
+    public void listen(User user) {
+        userService.addUser(user);
 
     }
 
     @KafkaListener(topics = "transaction", groupId = "a")
     @Transactional
-    public void transactionalListen(String message){
-        log.info("received message: {}", message);
+    public void transactionalListen(User user){
+        log.info("received message: {}", user);
 
-        if (!message.equals("sending user")){
-            userService.addUser(message);
-        }
+        userService.addUser(user);
     }
 
-    @KafkaListener(topics = "batch", groupId = "a", batch = "true")
-    public void batchListen(List<String> messages){
-        log.info("Get messages: {}", messages);
+    @KafkaListener(topics = "batch", groupId = "a")
+    public void batchListen(List<User> users){
+        log.info("Get messages: {}", users);
 
-        for (String message : messages){
-            userService.addUser(message);
+        for (User user : users){
+            userService.addUser(user);
         }
     }
 

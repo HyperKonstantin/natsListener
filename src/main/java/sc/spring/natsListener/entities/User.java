@@ -18,6 +18,6 @@ public class User {
     private String name;
     private int age;
     private int salary;
-    private Double averageDepartmentSalary;
+
     private String department;
 }
